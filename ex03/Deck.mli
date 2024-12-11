@@ -36,6 +36,11 @@ module rec Deck : sig
     type t
 
     val newCard : Value.t -> Color.t -> t
+    val allSpades : t list
+    val allHearts : t list
+    val allDiamonds : t list
+    val allClubs : t list
+    val all : t list
     val getValue : t -> Value.t
     val getColor : t -> Color.t
     val toString : t -> string

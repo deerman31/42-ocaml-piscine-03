@@ -7,7 +7,7 @@ ML_SOURCES = Color.ml main.ml
 CMX_OBJECTS = $(ML_SOURCES:%.ml=build/%.cmx)
 
 # 実行ファイル名
-TARGET = card_program
+TARGET = a.out
 
 # デフォルトターゲット
 all: $(TARGET)

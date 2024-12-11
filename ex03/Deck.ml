@@ -4,7 +4,7 @@ module Deck = struct
       (* Color *)
       type t = Spade | Heart | Diamond | Club
 
-      let all () = [ Spade; Heart; Diamond; Club ]
+      let all = [ Spade; Heart; Diamond; Club ]
 
       let toString t =
         match t with
@@ -38,8 +38,7 @@ module Deck = struct
         | King
         | As
 
-      let all () =
-        [ T2; T3; T4; T5; T6; T7; T8; T9; T10; Jack; Queen; King; As ]
+      let all = [ T2; T3; T4; T5; T6; T7; T8; T9; T10; Jack; Queen; King; As ]
 
       let toInt t =
         match t with
@@ -125,16 +124,16 @@ module Deck = struct
     type t = { color : Color.t; value : Value.t }
 
     let newCard v c = { color = c; value = v }
-    let allhelper color = List.map (fun x -> newCard x color) (Value.all ())
-    let allSpades () = allhelper Color.Spade
-    let allHearts () = allhelper Color.Heart
-    let allDiamonds () = allhelper Color.Diamond
-    let allClubs () = allhelper Color.Club
+    let allhelper color = List.map (fun x -> newCard x color) Value.all
+    let allSpades = allhelper Color.Spade
+    let allHearts = allhelper Color.Heart
+    let allDiamonds = allhelper Color.Diamond
+    let allClubs = allhelper Color.Club
 
-    let all () =
+    let all =
       List.fold_left
         (fun acc color -> List.append acc (allhelper color))
-        [] (Color.all ())
+        [] Color.all
 
     let getValue t = match t with { color = _; value = v } -> v
     let getColor t = match t with { color = c; value = _ } -> c
@@ -192,7 +191,7 @@ module Deck = struct
       in
       loop [] lst 1
     in
-    shuffle (Card.all ())
+    shuffle Card.all
 
   let toStringList t = List.map Card.toString t
   let toStringListVerbose t = List.map Card.toStringVerbose t
@@ -202,4 +201,3 @@ module Deck = struct
     | [] -> raise (Failure "The deck is empty")
     | card :: rest -> (card, rest)
 end
-
