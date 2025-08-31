@@ -3,10 +3,8 @@ OCAMLOPT = ocamlopt
 FLAGS = -I build
 
 # ソースファイル
-ML_SOURCES = Value.ml main.ml
-MLI_SOURCES = Value.mli
+ML_SOURCES = Card.ml main.ml
 CMX_OBJECTS = $(ML_SOURCES:%.ml=build/%.cmx)
-CMI_OBJECTS = $(MLI_SOURCES:%.mli=build/%.cmi)
 
 # 実行ファイル名
 TARGET = a.out
@@ -18,12 +16,8 @@ all: $(TARGET)
 build:
 	mkdir -p build
 
-# インターフェースファイル（.mli → .cmi）のコンパイル
-build/%.cmi: %.mli | build
-	$(OCAMLOPT) $(FLAGS) -c $< -o $@
-
-# オブジェクトファイル（.ml → .cmx）のコンパイル
-build/%.cmx: %.ml $(CMI_OBJECTS) | build
+# オブジェクトファイル（.cmx）のコンパイル
+build/%.cmx: %.ml | build
 	$(OCAMLOPT) $(FLAGS) -c $< -o $@
 	if [ -f *.cmi ]; then mv *.cmi build/; fi
 	if [ -f *.o ]; then mv *.o build/; fi
