@@ -3,8 +3,8 @@ OCAMLOPT = ocamlopt
 FLAGS = -I build
 
 # ソースファイル
-ML_SOURCES = Value.ml main.ml
-MLI_SOURCES = Value.mli
+ML_SOURCES = Deck.ml main.ml
+MLI_SOURCES = Deck.mli
 CMX_OBJECTS = $(ML_SOURCES:%.ml=build/%.cmx)
 CMI_OBJECTS = $(MLI_SOURCES:%.mli=build/%.cmi)
 

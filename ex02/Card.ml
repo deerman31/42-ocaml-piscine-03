@@ -115,49 +115,49 @@ module Value = struct
     | As -> King
 end
 
-module Card = struct
-  type t = { color : Color.t; value : Value.t }
+(* module Card = struct *)
+type t = { color : Color.t; value : Value.t }
 
-  let newCard v c = { color = c; value = v }
-  let allhelper color = List.map (fun x -> newCard x color) Value.all
-  let allSpades = allhelper Color.Spade
-  let allHearts = allhelper Color.Heart
-  let allDiamonds = allhelper Color.Diamond
-  let allClubs = allhelper Color.Club
+let newCard v c = { color = c; value = v }
+let allhelper color = List.map (fun x -> newCard x color) Value.all
+let allSpades = allhelper Color.Spade
+let allHearts = allhelper Color.Heart
+let allDiamonds = allhelper Color.Diamond
+let allClubs = allhelper Color.Club
 
-  let all =
-    List.fold_left
-      (fun acc color -> List.append acc (allhelper color))
-      [] Color.all
+let all =
+  List.fold_left
+    (fun acc color -> List.append acc (allhelper color))
+    [] Color.all
 
-  let getValue t = match t with { color = _; value = v } -> v
-  let getColor t = match t with { color = c; value = _ } -> c
-  let toString t = Value.toString (getValue t) ^ Color.toString (getColor t)
+let getValue t = match t with { color = _; value = v } -> v
+let getColor t = match t with { color = c; value = _ } -> c
+let toString t = Value.toString (getValue t) ^ Color.toString (getColor t)
 
-  let toStringVerbose t =
-    "Card("
-    ^ Value.toStringVerbose (getValue t)
-    ^ ", "
-    ^ Color.toStringVerbose (getColor t)
-    ^ ")"
+let toStringVerbose t =
+  "Card("
+  ^ Value.toStringVerbose (getValue t)
+  ^ ", "
+  ^ Color.toStringVerbose (getColor t)
+  ^ ")"
 
-  let compare t1 t2 =
-    let rec loop acc v2 = if acc = v2 then -1 else loop (Value.next acc) v2 in
-    let v1 = getValue t1 in
-    let v2 = getValue t2 in
-    try if v1 = v2 then 0 else loop v1 v2 with Invalid_argument _ -> 1
+let compare t1 t2 =
+  let rec loop acc v2 = if acc = v2 then -1 else loop (Value.next acc) v2 in
+  let v1 = getValue t1 in
+  let v2 = getValue t2 in
+  try if v1 = v2 then 0 else loop v1 v2 with Invalid_argument _ -> 1
 
-  let max t1 t2 = if getValue t1 >= getValue t2 then t1 else t2
-  let min t1 t2 = if getValue t1 <= getValue t2 then t1 else t2
+let max t1 t2 = if getValue t1 >= getValue t2 then t1 else t2
+let min t1 t2 = if getValue t1 <= getValue t2 then t1 else t2
 
-  let best lst =
-    match lst with
-    | [] -> invalid_arg "The list is empty"
-    | first :: rest -> List.fold_left max first rest
+let best lst =
+  match lst with
+  | [] -> invalid_arg "The list is empty"
+  | first :: rest -> List.fold_left max first rest
 
-  let isOf t ct = getColor t = ct
-  let isSpade t = isOf t Color.Spade
-  let isHeart t = isOf t Color.Heart
-  let isDiamond t = isOf t Color.Diamond
-  let isClub t = isOf t Color.Club
-end
+let isOf t ct = getColor t = ct
+let isSpade t = isOf t Color.Spade
+let isHeart t = isOf t Color.Heart
+let isDiamond t = isOf t Color.Diamond
+let isClub t = isOf t Color.Club
+(* end *)
