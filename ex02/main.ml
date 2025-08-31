@@ -66,13 +66,13 @@ let card_test () =
     if test1 && test2 && test3 && test4 && test5 then print_endline "OK"
     else print_endline "NG"
   in
-  let getValue_test () =
-    print_string "[getValue] -> ";
+  let get_value_test () =
+    print_string "[get_value] -> ";
     let card = Card.newCard Value.As Color.Diamond in
     print_endline (if Card.getValue card = Value.As then "OK" else "NG")
   in
-  let getColor_test () =
-    print_string "[getColor] -> ";
+  let get_color_test () =
+    print_string "[get_color] -> ";
     let card = Card.newCard Value.As Color.Diamond in
     print_endline (if Card.getColor card = Color.Diamond then "OK" else "NG")
   in
@@ -161,8 +161,8 @@ let card_test () =
   allDiamonds_test ();
   allClubs_test ();
   all_test ();
-  getValue_test ();
-  getColor_test ();
+  get_value_test ();
+  get_color_test ();
   toString_test ();
   toStringVerbose_test ();
   compare_test ();
