@@ -1,41 +1,46 @@
-NAME = a.out
+# コンパイラとフラグの設定
+OCAMLOPT = ocamlopt
+FLAGS = -I build
 
-SOURCES = Deck.ml main.ml
+# ソースファイル
+ML_SOURCES = Value.ml main.ml
+MLI_SOURCES = Value.mli
+CMX_OBJECTS = $(ML_SOURCES:%.ml=build/%.cmx)
+CMI_OBJECTS = $(MLI_SOURCES:%.mli=build/%.cmi)
 
-CMI = Deck.cmi
-CMX = $(SOURCES:.ml=.cmx)
-OBJS = $(CMX)
+# 実行ファイル名
+TARGET = a.out
 
-BUILD_DIR = build
+# デフォルトターゲット
+all: $(TARGET)
 
-MLI = Deck.mli
+# buildディレクトリの作成
+build:
+	mkdir -p build
 
-NC = ocamlopt
-NC_FLAGS = -I $(BUILD_DIR)
+# インターフェースファイル（.mli → .cmi）のコンパイル
+build/%.cmi: %.mli | build
+	$(OCAMLOPT) $(FLAGS) -c $< -o $@
 
-RM = rm -f
-MKDIR = mkdir -p
+# オブジェクトファイル（.ml → .cmx）のコンパイル
+build/%.cmx: %.ml $(CMI_OBJECTS) | build
+	$(OCAMLOPT) $(FLAGS) -c $< -o $@
+	if [ -f *.cmi ]; then mv *.cmi build/; fi
+	if [ -f *.o ]; then mv *.o build/; fi
 
-all: $(NAME)
+# 実行ファイルの生成
+$(TARGET): $(CMX_OBJECTS)
+	$(OCAMLOPT) $(FLAGS) -o $@ $(CMX_OBJECTS)
 
-$(NAME): $(BUILD_DIR) $(CMI) $(OBJS)
-	$(NC) $(NC_FLAGS) -o $(NAME) $(addprefix $(BUILD_DIR)/,$(OBJS))
-
-$(BUILD_DIR):
-	$(MKDIR) $(BUILD_DIR)
-
-%.cmi: %.mli
-	$(NC) $(NC_FLAGS) -c $< -o $(BUILD_DIR)/$@
-
-%.cmx: %.ml
-	$(NC) $(NC_FLAGS) -c $< -o $(BUILD_DIR)/$@
-
+# ビルドディレクトリの削除
 clean:
-	$(RM) -r $(BUILD_DIR)
+	rm -rf build
 
+# 完全クリーン（実行ファイルも削除）
 fclean: clean
-	$(RM) $(NAME)
+	rm -f $(TARGET)
 
+# 再ビルド
 re: fclean all
 
 .PHONY: all clean fclean re

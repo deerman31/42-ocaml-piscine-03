@@ -4,7 +4,9 @@ FLAGS = -I build
 
 # ソースファイル
 ML_SOURCES = Color.ml main.ml
+MLI_SOURCES = Color.mli
 CMX_OBJECTS = $(ML_SOURCES:%.ml=build/%.cmx)
+CMI_OBJECTS = $(MLI_SOURCES:%.mli=build/%.cmi)
 
 # 実行ファイル名
 TARGET = a.out
@@ -16,8 +18,12 @@ all: $(TARGET)
 build:
 	mkdir -p build
 
-# オブジェクトファイル（.cmx）のコンパイル
-build/%.cmx: %.ml | build
+# インターフェースファイル（.mli → .cmi）のコンパイル
+build/%.cmi: %.mli | build
+	$(OCAMLOPT) $(FLAGS) -c $< -o $@
+
+# オブジェクトファイル（.ml → .cmx）のコンパイル
+build/%.cmx: %.ml $(CMI_OBJECTS) | build
 	$(OCAMLOPT) $(FLAGS) -c $< -o $@
 	if [ -f *.cmi ]; then mv *.cmi build/; fi
 	if [ -f *.o ]; then mv *.o build/; fi
